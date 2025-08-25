@@ -12,44 +12,48 @@ function toCursorFormat(data, outputDir = '.cursor/rules') {
   }
   fs.mkdirSync(outputDir, { recursive: true });
 
-  data.groups.forEach(group => {
-    group.rules.forEach(rule => {
-      const fileName = rule.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '') + '.mdc';
-      const filePath = path.join(outputDir, fileName);
-      const fileContent = `---
-description: ${rule.name}
-alwaysApply: false
----
-${rule.prompt}
+  data.rules.forEach(rule => {
+    const fileName = rule.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '') + '.mdc';
+    const filePath = path.join(outputDir, fileName);
+
+    let frontmatter = {
+      description: rule.description
+    };
+
+    if (rule.globs) {
+      frontmatter.globs = rule.globs;
+    } else {
+      frontmatter.alwaysApply = false; // Default if no globs are provided
+    }
+
+    const fileContent = `---
+${yaml.stringify(frontmatter)}---
+${rule.content}
 `;
-      fs.writeFileSync(filePath, fileContent);
-    });
+    fs.writeFileSync(filePath, fileContent);
   });
   console.log(`Successfully created Cursor rules in ${outputDir}`);
 }
 
 function toClaudeFormat(data, outputFile = 'CLAUDE.md') {
-  let content = '';
-  data.groups.forEach(group => {
-    content += `## ${group.name}\n\n`;
-    group.rules.forEach(rule => {
-      content += `### ${rule.name}\n`;
-      content += `${rule.prompt}\n\n`;
-    });
+  let content = '# Custom Rules for Claude\n\n';
+  data.rules.forEach(rule => {
+    content += `## ${rule.name}\n\n`;
+    content += `**Description:** ${rule.description}\n\n`;
+    content += `${rule.content}\n\n`;
+    content += '---\n\n';
   });
   fs.writeFileSync(outputFile, content);
   console.log(`Successfully created Claude rules in ${outputFile}`);
 }
 
 function toClineFormat(data, outputFile = 'cline-rules.txt') {
-  let content = '';
-  data.groups.forEach(group => {
-    content += `Group: ${group.name}\n`;
+  let content = 'Custom Rules for Cline\n======================\n\n';
+  data.rules.forEach(rule => {
+    content += `Rule: ${rule.name}\n`;
+    content += `Description: ${rule.description}\n`;
     content += '-----------------\n';
-    group.rules.forEach(rule => {
-      content += `Rule: ${rule.name}\n`;
-      content += `${rule.prompt}\n\n`;
-    });
+    content += `${rule.content}\n\n`;
   });
   fs.writeFileSync(outputFile, content);
   console.log(`Successfully created Cline rules in ${outputFile}`);
@@ -81,6 +85,10 @@ const argv = yargs(hideBin(process.argv))
 try {
   const file = fs.readFileSync(argv.input, 'utf8');
   const data = yaml.parse(file);
+
+  if (!data.rules) {
+    throw new Error('The YAML file must have a root element named "rules".');
+  }
 
   switch (argv.format.toLowerCase()) {
     case 'cursor':

@@ -4,22 +4,32 @@ This project provides a simple script to transform a universal YAML format for A
 
 ## Universal YAML Format
 
-The universal format is defined in the `rules.yaml` file. It consists of a list of groups, where each group has a name and a list of rules. Each rule has a name and a prompt.
+The universal format is defined in the `rules.yaml` file. It consists of a root `rules` element, which is a list of individual rule objects. Each rule object has the following fields:
+
+- `name`: (Required) A string that identifies the rule. This is used for the filename in formats that require one file per rule (e.g., Cursor).
+- `description`: (Required) A string that describes the purpose of the rule.
+- `content`: (Required) A string that contains the body of the rule or prompt.
+- `globs`: (Optional) A list of glob patterns or a map to specify which files the rule applies to. This is primarily used by the Cursor format. If omitted, a default behavior is applied.
 
 Here is an example of the `rules.yaml` format:
 
 ```yaml
-groups:
-  - name: Group 1
-    rules:
-      - name: Rule 1.1
-        prompt: This is the prompt for rule 1.1
-      - name: Rule 1.2
-        prompt: This is the prompt for rule 1.2
-  - name: Group 2
-    rules:
-      - name: Rule 2.1
-        prompt: This is the prompt for rule 2.1
+rules:
+  - name: General Coding Rules
+    description: These are general coding rules
+    globs:
+      alwaysApply: true
+    content: |
+      - Use clear and descriptive variable names.
+      - Write comments to explain complex logic.
+
+  - name: Python Specific Rules
+    description: Rules for writing Python code
+    globs:
+      - "**/*.py"
+    content: |
+      - Follow the PEP 8 style guide.
+      - Use type hints for function signatures.
 ```
 
 ## Usage
@@ -36,22 +46,22 @@ Replace `<format>` with one of the supported formats: `cursor`, `claude`, `cline
 
 You can also specify a different input file using the `--input` or `-i` flag:
 ```bash
-node transform.js --format <format> --input my_rules.yaml
+npm install && node transform.js --format <format> --input my_rules.yaml
 ```
 
 ## Output Formats
 
 ### Cursor (`--format cursor`)
 
-This format generates a `.cursor/rules/` directory in your project. Each rule from the `rules.yaml` file is transformed into a separate `.mdc` file. The filename is a sanitized version of the rule name.
+This format generates a `.cursor/rules/` directory in your project. Each rule from the `rules.yaml` file is transformed into a separate `.mdc` file. The filename is a sanitized version of the rule `name`. The `description` and `globs` fields are used to generate the frontmatter for each file.
 
 ### Claude (`--format claude`)
 
-This format generates a single `CLAUDE.md` file. The groups and rules from the `rules.yaml` file are formatted using Markdown headings.
+This format generates a single `CLAUDE.md` file. Each rule is formatted with its name as a heading, followed by its description and content.
 
 ### Cline (`--format cline`)
 
-This format generates a single `cline-rules.txt` file. This is a plain text file that you can copy and paste into the Cline UI.
+This format generates a single `cline-rules.txt` file. This is a plain text file with all the rules, which you can copy and paste into the Cline UI.
 
 ### JSON (`--format json`)
 

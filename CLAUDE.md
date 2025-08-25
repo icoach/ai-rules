@@ -1,12 +1,31 @@
-## Group 1
+# Custom Rules for Claude
 
-### Rule 1.1
-This is the prompt for rule 1.1
+## General Coding Rules
 
-### Rule 1.2
-This is the prompt for rule 1.2
+**Description:** These are general coding rules
 
-## Group 2
+- Use clear and descriptive variable names.
+- Write comments to explain complex logic.
+- Keep functions short and focused on a single task.
 
-### Rule 2.1
-This is the prompt for rule 2.1
+
+---
+
+## Python Specific Rules
+
+**Description:** Rules for writing Python code
+
+- Follow the PEP 8 style guide.
+- Use type hints for function signatures.
+- Write docstrings for all public modules, functions, classes, and methods.
+
+
+---
+
+## Simple Rule without Globs
+
+**Description:** A simple rule that applies everywhere
+
+This is a simple rule prompt that should be considered for all files.
+
+---
