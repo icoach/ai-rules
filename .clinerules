@@ -1,0 +1,19 @@
+rules:
+  - name: General Coding Rules
+    description: These are general coding rules
+    content: |
+      - Use clear and descriptive variable names.
+      - Write comments to explain complex logic.
+      - Keep functions short and focused on a single task.
+  - name: Python Specific Rules
+    description: Rules for writing Python code
+    content: >
+      - Follow the PEP 8 style guide.
+
+      - Use type hints for function signatures.
+
+      - Write docstrings for all public modules, functions, classes, and
+      methods.
+  - name: Simple Rule without Globs
+    description: A simple rule that applies everywhere
+    content: This is a simple rule prompt that should be considered for all files.
