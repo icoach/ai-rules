@@ -1,0 +1,11 @@
+groups:
+  - name: Group 1
+    rules:
+      - name: Rule 1.1
+        prompt: This is the prompt for rule 1.1
+      - name: Rule 1.2
+        prompt: This is the prompt for rule 1.2
+  - name: Group 2
+    rules:
+      - name: Rule 2.1
+        prompt: This is the prompt for rule 2.1

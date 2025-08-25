@@ -1,0 +1,13 @@
+{
+  "name": "rule-transformer",
+  "version": "1.0.0",
+  "description": "A script to transform YAML rules into various formats.",
+  "main": "transform.js",
+  "scripts": {
+    "transform": "node transform.js"
+  },
+  "dependencies": {
+    "yaml": "^2.3.1",
+    "yargs": "^17.7.2"
+  }
+}
