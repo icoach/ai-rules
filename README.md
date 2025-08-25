@@ -17,8 +17,6 @@ Here is an example of the `rules.yaml` format:
 rules:
   - name: General Coding Rules
     description: These are general coding rules
-    globs:
-      alwaysApply: true
     content: |
       - Use clear and descriptive variable names.
       - Write comments to explain complex logic.
