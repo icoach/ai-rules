@@ -1,7 +1,6 @@
 ---
 description: These are general coding rules
-globs:
-  alwaysApply: true
+alwaysApply: true
 ---
 - Use clear and descriptive variable names.
 - Write comments to explain complex logic.

@@ -21,9 +21,11 @@ function toCursorFormat(data, outputDir = '.cursor/rules') {
     };
 
     if (rule.globs) {
-      frontmatter.globs = rule.globs;
-    } else {
-      frontmatter.alwaysApply = false; // Default if no globs are provided
+      if (typeof rule.globs === 'object' && rule.globs.alwaysApply !== undefined && !Array.isArray(rule.globs)) {
+        frontmatter.alwaysApply = rule.globs.alwaysApply;
+      } else {
+        frontmatter.globs = rule.globs;
+      }
     }
 
     const fileContent = `---
@@ -157,7 +159,7 @@ try {
       break;
     default:
       console.error(`Error: Format '${argv.format}' is not supported.`);
-      console.error('Supported formats are: cursor, claude, cline, json');
+      console.error('Supported formats are: cursor, claude, cline, codex, kilo, windsurf, json');
       process.exit(1);
   }
 
