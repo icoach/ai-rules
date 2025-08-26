@@ -1,4 +1,4 @@
-# Rule Transformer
+# AI Rules
 
 This project provides a simple script to transform a universal YAML format for AI rules into various platform-specific formats. This allows you to maintain a single source of truth for your custom rules and easily generate the necessary files for different AI coding assistants.
 
