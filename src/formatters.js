@@ -2,10 +2,33 @@ import fs from "fs";
 import path from "path";
 import yaml from "yaml";
 
-export function toCursorFormat(data, outputDir = ".cursor/rules") {
-  if (fs.existsSync(outputDir)) {
-    fs.rmSync(outputDir, { recursive: true, force: true });
+// Helper function to check if output exists and handle force logic
+function checkOutputExists(outputPath, force, type = "directory") {
+  if (fs.existsSync(outputPath)) {
+    if (!force) {
+      console.error(
+        `Error: ${
+          type === "directory" ? "Directory" : "File"
+        } '${outputPath}' already exists.`
+      );
+      console.error("Use --force flag to overwrite existing output.");
+      process.exit(1);
+    }
+    // If force is true, remove the existing output
+    if (type === "directory") {
+      fs.rmSync(outputPath, { recursive: true, force: true });
+    } else {
+      fs.unlinkSync(outputPath);
+    }
   }
+}
+
+export function toCursorFormat(
+  data,
+  outputDir = ".cursor/rules",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
   fs.mkdirSync(outputDir, { recursive: true });
 
   data.rules.forEach((rule) => {
@@ -38,7 +61,8 @@ ${rule.content}
   console.log(`Successfully created Cursor rules in ${outputDir}`);
 }
 
-export function toClaudeFormat(data, outputFile = "CLAUDE.md") {
+export function toClaudeFormat(data, outputFile = "CLAUDE.md", force = false) {
+  checkOutputExists(outputFile, force, "file");
   let content = "# Custom Rules for Claude\n\n";
   data.rules.forEach((rule) => {
     content += `## ${rule.name}\n\n`;
@@ -50,7 +74,8 @@ export function toClaudeFormat(data, outputFile = "CLAUDE.md") {
   console.log(`Successfully created Claude rules in ${outputFile}`);
 }
 
-export function toClineFormat(data, outputFile = ".clinerules") {
+export function toClineFormat(data, outputFile = ".clinerules", force = false) {
+  checkOutputExists(outputFile, force, "file");
   const clineRules = {
     rules: data.rules.map((rule) => ({
       name: rule.name,
@@ -63,7 +88,8 @@ export function toClineFormat(data, outputFile = ".clinerules") {
   console.log(`Successfully created Cline rules in ${outputFile}`);
 }
 
-export function toCodexFormat(data, outputFile = "AGENTS.md") {
+export function toCodexFormat(data, outputFile = "AGENTS.md", force = false) {
+  checkOutputExists(outputFile, force, "file");
   let content = "# Agent Instructions for Codex CLI\n\n";
   data.rules.forEach((rule) => {
     content += `## ${rule.name}\n\n`;
@@ -75,10 +101,12 @@ export function toCodexFormat(data, outputFile = "AGENTS.md") {
   console.log(`Successfully created Codex CLI rules in ${outputFile}`);
 }
 
-export function toKiloCodeFormat(data, outputDir = ".kilocode/rules") {
-  if (fs.existsSync(outputDir)) {
-    fs.rmSync(outputDir, { recursive: true, force: true });
-  }
+export function toKiloCodeFormat(
+  data,
+  outputDir = ".kilocode/rules",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
   fs.mkdirSync(outputDir, { recursive: true });
 
   data.rules.forEach((rule) => {
@@ -91,10 +119,12 @@ export function toKiloCodeFormat(data, outputDir = ".kilocode/rules") {
   console.log(`Successfully created Kilo Code rules in ${outputDir}`);
 }
 
-export function toWindsurfFormat(data, outputDir = ".windsurf/rules") {
-  if (fs.existsSync(outputDir)) {
-    fs.rmSync(outputDir, { recursive: true, force: true });
-  }
+export function toWindsurfFormat(
+  data,
+  outputDir = ".windsurf/rules",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
   fs.mkdirSync(outputDir, { recursive: true });
 
   data.rules.forEach((rule) => {

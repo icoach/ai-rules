@@ -16,6 +16,7 @@ export function transform({
   scopes = [],
   inputPath = "rules.yaml",
   cwd = process.cwd(),
+  force = false,
 } = {}) {
   // Change to the specified working directory if provided
   if (cwd && cwd !== process.cwd()) {
@@ -78,22 +79,22 @@ export function transform({
 
     switch (argv.format.toLowerCase()) {
       case "cursor":
-        toCursorFormat(data);
+        toCursorFormat(data, undefined, force);
         break;
       case "claude":
-        toClaudeFormat(data);
+        toClaudeFormat(data, undefined, force);
         break;
       case "cline":
-        toClineFormat(data);
+        toClineFormat(data, undefined, force);
         break;
       case "codex":
-        toCodexFormat(data);
+        toCodexFormat(data, undefined, force);
         break;
       case "kilo":
-        toKiloCodeFormat(data);
+        toKiloCodeFormat(data, undefined, force);
         break;
       case "windsurf":
-        toWindsurfFormat(data);
+        toWindsurfFormat(data, undefined, force);
         break;
       case "json":
         toJsonFormat(data);

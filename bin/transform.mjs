@@ -22,6 +22,11 @@ const argv = yargs(hideBin(process.argv))
     type: "array",
     description: "Filter rules by scope(s)",
   })
+  .option("force", {
+    type: "boolean",
+    description: "Force overwrite existing output files/directories",
+    default: false,
+  })
   .help()
   .alias("help", "h").argv;
 
@@ -33,6 +38,7 @@ try {
     scopes,
     inputPath: argv.input,
     cwd: process.cwd(),
+    force: argv.force,
   });
 } catch (err) {
   console.error(err?.stack || String(err));
