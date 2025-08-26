@@ -35,12 +35,18 @@ rules:
 
 ## Usage
 
-The `transform.js` script is used to perform the transformations. You need to have Node.js and npm installed to run the script.
+The rule transformer can be used as a CLI tool. You need to have Node.js and npm installed to run the script.
 
-First, install the dependencies and run the script in a single command. This is necessary because the `node_modules` directory may not be persisted between commands in all environments.
+First, install the dependencies and run the CLI command. This is necessary because the `node_modules` directory may not be persisted between commands in all environments.
 
 ```bash
-npm install && node transform.js --format <format>
+npm install && npx rules --format <format>
+```
+
+Alternatively, you can run the CLI directly:
+
+```bash
+npm install && node bin/transform.mjs --format <format>
 ```
 
 Replace `<format>` with one of the supported formats: `cursor`, `claude`, `cline`, `codex`, `kilo`, `windsurf`, or `json`.
@@ -51,15 +57,51 @@ You can filter the rules by scope using the `--scope` or `-s` flag. You can prov
 
 ```bash
 # Process only rules with the 'frontend' scope
-npm install && node transform.js --format cursor --scope frontend
+npm install && npx rules --format cursor --scope frontend
 
 # Process rules with either the 'python' or 'docs' scope
-npm install && node transform.js --format claude --scope python docs
+npm install && npx rules --format claude --scope python docs
 ```
 
 You can also specify a different input file using the `--input` or `-i` flag:
 ```bash
-npm install && node transform.js --format <format> --input my_rules.yaml
+npm install && npx rules --format <format> --input my_rules.yaml
+```
+
+### Overwrite Protection
+
+By default, the script prevents overwriting existing output files and directories to avoid accidental data loss. If you try to run the script when output already exists, you'll see an error message:
+
+```bash
+npm install && npx rules --format cursor
+# Error: Directory '.cursor/rules' already exists.
+# Use --force flag to overwrite existing output.
+```
+
+To intentionally overwrite existing output, use the `--force` flag:
+
+```bash
+# Force overwrite existing output
+npm install && npx rules --format cursor --force
+```
+
+This protection applies to all output formats:
+- **Directory-based formats** (cursor, kilo, windsurf): Protects output directories
+- **File-based formats** (claude, cline, codex): Protects output files
+
+### CLI Options
+
+The CLI supports the following options:
+
+- `-f, --format`: **(Required)** The output format (cursor, claude, cline, codex, kilo, windsurf, json)
+- `-i, --input`: Input YAML file (default: `rules.yaml`)
+- `-s, --scope`: Filter rules by scope(s) - can be specified multiple times
+- `--force`: Force overwrite existing output files/directories
+- `-h, --help`: Show help information
+
+Example with all options:
+```bash
+npm install && npx rules --format cursor --input custom_rules.yaml --scope frontend python --force
 ```
 
 ## Output Formats
