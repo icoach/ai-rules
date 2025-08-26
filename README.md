@@ -40,7 +40,7 @@ The rule transformer can be used as a CLI tool. You need to have Node.js and npm
 First, install the dependencies and run the CLI command. This is necessary because the `node_modules` directory may not be persisted between commands in all environments.
 
 ```bash
-npm install && npx rules --format <format>
+npm install && npx ai-rules --format <format>
 ```
 
 Alternatively, you can run the CLI directly:
@@ -57,15 +57,15 @@ You can filter the rules by scope using the `--scope` or `-s` flag. You can prov
 
 ```bash
 # Process only rules with the 'frontend' scope
-npm install && npx rules --format cursor --scope frontend
+npm install && npx ai-rules --format cursor --scope frontend
 
 # Process rules with either the 'python' or 'docs' scope
-npm install && npx rules --format claude --scope python docs
+npm install && npx ai-rules --format claude --scope python docs
 ```
 
 You can also specify a different input file using the `--input` or `-i` flag:
 ```bash
-npm install && npx rules --format <format> --input my_rules.yaml
+npm install && npx ai-rules --format <format> --input my_rules.yaml
 ```
 
 ### Overwrite Protection
@@ -73,7 +73,7 @@ npm install && npx rules --format <format> --input my_rules.yaml
 By default, the script prevents overwriting existing output files and directories to avoid accidental data loss. If you try to run the script when output already exists, you'll see an error message:
 
 ```bash
-npm install && npx rules --format cursor
+npm install && npx ai-rules --format cursor
 # Error: Directory '.cursor/rules' already exists.
 # Use --force flag to overwrite existing output.
 ```
@@ -82,7 +82,7 @@ To intentionally overwrite existing output, use the `--force` flag:
 
 ```bash
 # Force overwrite existing output
-npm install && npx rules --format cursor --force
+npm install && npx ai-rules --format cursor --force
 ```
 
 This protection applies to all output formats:
@@ -101,7 +101,7 @@ The CLI supports the following options:
 
 Example with all options:
 ```bash
-npm install && npx rules --format cursor --input custom_rules.yaml --scope frontend python --force
+npm install && npx ai-rules --format cursor --input custom_rules.yaml --scope frontend python --force
 ```
 
 ## Output Formats

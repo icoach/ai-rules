@@ -5,12 +5,12 @@
   "type": "module",
   "main": "src/transform.js",
   "bin": {
-    "rules": "./bin/transform.mjs"
+    "ai-rules": "./bin/transform.mjs"
   },
   "scripts": {
-    "rules:cursor": "rules --format cursor",
-    "rules:claude": "rules --format claude -s python docs",
-    "rules:windsurf": "rules --format windsurf"
+    "rules:cursor": "ai-rules --format cursor",
+    "rules:claude": "ai-rules --format claude -s python docs",
+    "rules:windsurf": "ai-rules --format windsurf"
   },
   "dependencies": {
     "yaml": "^2.3.1",
