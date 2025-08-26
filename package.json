@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A script to transform YAML rules into various formats.",
   "main": "transform.js",
+  "bin": {
+    "transform": "./transform.js"
+  },
   "scripts": {
     "transform": "node transform.js"
   },
