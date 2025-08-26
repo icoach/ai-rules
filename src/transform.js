@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import yaml from "yaml";
 import {
   toCursorFormat,
@@ -26,6 +27,37 @@ export function transform({
     input: inputPath,
     scope: scopes,
   };
+
+  // Check if the input file exists
+  if (!fs.existsSync(argv.input)) {
+    // If the specified input file doesn't exist, check for rules.yaml in root
+    const rootRulesPath = path.resolve(process.cwd(), "rules.yaml");
+
+    if (argv.input !== "rules.yaml" && fs.existsSync(rootRulesPath)) {
+      console.error(`Error: Input file '${argv.input}' does not exist.`);
+      console.error(
+        `However, 'rules.yaml' was found in the root directory: ${rootRulesPath}`
+      );
+      console.error(
+        "Consider using the default or specify the correct path with --input flag."
+      );
+    } else if (argv.input === "rules.yaml") {
+      console.error(
+        `Error: 'rules.yaml' file not found in the current directory: ${process.cwd()}`
+      );
+      console.error(
+        "Please ensure the rules.yaml file exists or specify a different input file with --input flag."
+      );
+    } else {
+      console.error(`Error: Input file '${argv.input}' does not exist.`);
+      if (!fs.existsSync(rootRulesPath)) {
+        console.error(
+          "Also, 'rules.yaml' was not found in the root directory."
+        );
+      }
+    }
+    process.exit(1);
+  }
 
   try {
     const file = fs.readFileSync(argv.input, "utf8");
