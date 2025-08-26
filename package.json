@@ -1,13 +1,16 @@
 {
-  "name": "rule-transformer",
+  "name": "au-rules",
   "version": "1.0.0",
   "description": "A script to transform YAML rules into various formats.",
-  "main": "transform.js",
+  "type": "module",
+  "main": "src/transform.js",
   "bin": {
-    "transform": "./transform.js"
+    "ai-rules": "./bin/transform.mjs"
   },
   "scripts": {
-    "transform": "node transform.js"
+    "rules:cursor": "ai-rules --format cursor",
+    "rules:claude": "ai-rules --format claude -s python docs",
+    "rules:windsurf": "ai-rules --format windsurf"
   },
   "dependencies": {
     "yaml": "^2.3.1",
