@@ -1,7 +1,5 @@
 import fs from "fs";
 import yaml from "yaml";
-import yargs from "yargs";
-import { hideBin } from "yargs/helpers";
 import {
   toCursorFormat,
   toClaudeFormat,
@@ -12,28 +10,22 @@ import {
   toJsonFormat,
 } from "./formatters.js";
 
-export function transform(args = process.argv.slice(2)) {
-  const argv = yargs(hideBin(["node", "transform", ...args]))
-    .option("format", {
-      alias: "f",
-      type: "string",
-      description:
-        "The output format (cursor, claude, cline, codex, kilo, windsurf, json)",
-      demandOption: true,
-    })
-    .option("input", {
-      alias: "i",
-      type: "string",
-      description: "The input YAML file",
-      default: "rules.yaml",
-    })
-    .option("scope", {
-      alias: "s",
-      type: "array",
-      description: "Filter rules by scope(s)",
-    })
-    .help()
-    .alias("help", "h").argv;
+export function transform({
+  format,
+  scopes = [],
+  inputPath = "rules.yaml",
+  cwd = process.cwd(),
+} = {}) {
+  // Change to the specified working directory if provided
+  if (cwd && cwd !== process.cwd()) {
+    process.chdir(cwd);
+  }
+
+  const argv = {
+    format,
+    input: inputPath,
+    scope: scopes,
+  };
 
   try {
     const file = fs.readFileSync(argv.input, "utf8");
@@ -87,7 +79,24 @@ export function transform(args = process.argv.slice(2)) {
   }
 }
 
-// If this module is run directly, execute the transform function
+// If this module is run directly, execute the transform function with CLI args
 if (import.meta.url === `file://${process.argv[1]}`) {
-  transform();
+  // Parse command line arguments manually for direct execution
+  const args = process.argv.slice(2);
+  const format =
+    args.find((arg) => arg.startsWith("--format="))?.split("=")[1] ||
+    args[args.indexOf("--format") + 1];
+  const inputPath =
+    args.find((arg) => arg.startsWith("--input="))?.split("=")[1] ||
+    args[args.indexOf("--input") + 1] ||
+    "rules.yaml";
+
+  if (!format) {
+    console.error(
+      "Missing --format. Supported: cursor | claude | cline | codex | kilo | windsurf | json"
+    );
+    process.exit(1);
+  }
+
+  transform({ format, inputPath });
 }

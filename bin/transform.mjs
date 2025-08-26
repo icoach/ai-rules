@@ -1,25 +1,31 @@
 #!/usr/bin/env node
-import minimist from "minimist";
-import { transform } from "../src/transform.js"; // nebo "../dist/transform.js"
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import { transform } from "../src/transform.js";
 
-const argv = minimist(process.argv.slice(2), {
-  string: ["format", "input"],
-  alias: { s: "scope", i: "input" },
-  default: { input: "rules.yaml" },
-});
-// argv.scope může být string nebo pole
-const scopes = Array.isArray(argv.scope)
-  ? argv.scope
-  : argv.scope
-  ? [argv.scope]
-  : [];
+const argv = yargs(hideBin(process.argv))
+  .option("format", {
+    alias: "f",
+    type: "string",
+    description:
+      "The output format (cursor, claude, cline, codex, kilo, windsurf, json)",
+    demandOption: true,
+  })
+  .option("input", {
+    alias: "i",
+    type: "string",
+    description: "The input YAML file",
+    default: "rules.yaml",
+  })
+  .option("scope", {
+    alias: "s",
+    type: "array",
+    description: "Filter rules by scope(s)",
+  })
+  .help()
+  .alias("help", "h").argv;
 
-if (!argv.format) {
-  console.error(
-    "Missing --format. Supported: cursor | claude | cline | codex | kilo | windsurf | json"
-  );
-  process.exit(1);
-}
+const scopes = argv.scope || [];
 
 try {
   await transform({
