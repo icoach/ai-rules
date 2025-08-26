@@ -1,4 +1,4 @@
-# AI rules universal transformer
+# Rule Transformer
 
 This project provides a simple script to transform a universal YAML format for AI rules into various platform-specific formats. This allows you to maintain a single source of truth for your custom rules and easily generate the necessary files for different AI coding assistants.
 
@@ -9,6 +9,7 @@ The universal format is defined in the `rules.yaml` file. It consists of a root 
 - `name`: (Required) A string that identifies the rule. This is used for the filename in formats that require one file per rule.
 - `description`: (Required) A string that describes the purpose of the rule.
 - `content`: (Required) A string that contains the body of the rule or prompt.
+- `scope`: (Optional) A list of strings that define the scope(s) of the rule (e.g., `frontend`, `python`, `docs`).
 - `globs`: (Optional) A list of glob patterns or a map to specify which files the rule applies to. This is primarily used by the Cursor format.
 
 Here is an example of the `rules.yaml` format:
@@ -17,12 +18,14 @@ Here is an example of the `rules.yaml` format:
 rules:
   - name: General Coding Rules
     description: These are general coding rules
+    scope: ['general', 'frontend']
     content: |
       - Use clear and descriptive variable names.
       - Write comments to explain complex logic.
 
   - name: Python Specific Rules
     description: Rules for writing Python code
+    scope: ['python', 'backend']
     globs:
       - "**/*.py"
     content: |
@@ -41,6 +44,18 @@ npm install && node transform.js --format <format>
 ```
 
 Replace `<format>` with one of the supported formats: `cursor`, `claude`, `cline`, `codex`, `kilo`, `windsurf`, or `json`.
+
+### Filtering by Scope
+
+You can filter the rules by scope using the `--scope` or `-s` flag. You can provide one or more scopes. Only the rules that match at least one of the provided scopes will be processed.
+
+```bash
+# Process only rules with the 'frontend' scope
+npm install && node transform.js --format cursor --scope frontend
+
+# Process rules with either the 'python' or 'docs' scope
+npm install && node transform.js --format claude --scope python docs
+```
 
 You can also specify a different input file using the `--input` or `-i` flag:
 ```bash

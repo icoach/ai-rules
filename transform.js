@@ -123,6 +123,11 @@ const argv = yargs(hideBin(process.argv))
     description: 'The input YAML file',
     default: 'rules.yaml',
   })
+  .option('scope', {
+    alias: 's',
+    type: 'array',
+    description: 'Filter rules by scope(s)',
+  })
   .help()
   .alias('help', 'h')
   .argv;
@@ -133,6 +138,14 @@ try {
 
   if (!data.rules) {
     throw new Error('The YAML file must have a root element named "rules".');
+  }
+
+  // Filter rules by scope if the --scope option is provided
+  if (argv.scope && argv.scope.length > 0) {
+    const scopes = argv.scope.map(s => s.toLowerCase());
+    data.rules = data.rules.filter(rule =>
+      rule.scope && rule.scope.some(s => scopes.includes(s.toLowerCase()))
+    );
   }
 
   switch (argv.format.toLowerCase()) {
