@@ -38,18 +38,14 @@ export function toCursorFormat(
 
     let frontmatter = {
       description: rule.description,
+      alwaysApply: true,
     };
 
     if (rule.globs) {
-      if (
-        typeof rule.globs === "object" &&
-        rule.globs.alwaysApply !== undefined &&
-        !Array.isArray(rule.globs)
-      ) {
-        frontmatter.alwaysApply = rule.globs.alwaysApply;
-      } else {
-        frontmatter.globs = rule.globs;
-      }
+      // Cursor expects globs as comma-separated string
+      frontmatter.globs = Array.isArray(rule.globs)
+        ? rule.globs.join(",")
+        : rule.globs;
     }
 
     const fileContent = `---
@@ -77,11 +73,18 @@ export function toClaudeFormat(data, outputFile = "CLAUDE.md", force = false) {
 export function toClineFormat(data, outputFile = ".clinerules", force = false) {
   checkOutputExists(outputFile, force, "file");
   const clineRules = {
-    rules: data.rules.map((rule) => ({
-      name: rule.name,
-      description: rule.description,
-      content: rule.content,
-    })),
+    rules: data.rules.map((rule) => {
+      const clineRule = {
+        name: rule.name,
+        description: rule.description,
+        content: rule.content,
+      };
+      // Include globs if they exist (keep as array for YAML)
+      if (rule.globs) {
+        clineRule.globs = rule.globs;
+      }
+      return clineRule;
+    }),
   };
   const yamlContent = yaml.stringify(clineRules);
   fs.writeFileSync(outputFile, yamlContent);

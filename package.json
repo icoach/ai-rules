@@ -8,9 +8,9 @@
     "ai-rules": "./bin/transform.mjs"
   },
   "scripts": {
-    "rules:cursor": "ai-rules --format cursor",
-    "rules:claude": "ai-rules --format claude -s python docs",
-    "rules:windsurf": "ai-rules --format windsurf"
+    "rules:cursor": "npx ai-rules --format cursor",
+    "rules:claude": "npx ai-rules --format claude -s python docs",
+    "rules:windsurf": "npx ai-rules --format windsurf"
   },
   "dependencies": {
     "yaml": "^2.3.1",

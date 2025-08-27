@@ -26,8 +26,7 @@ rules:
   - name: Python Specific Rules
     description: Rules for writing Python code
     scope: ['python', 'backend']
-    globs:
-      - "**/*.py"
+    globs: ["**/*.py"]
     content: |
       - Follow the PEP 8 style guide.
       - Use type hints for function signatures.

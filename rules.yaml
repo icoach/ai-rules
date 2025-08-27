@@ -2,8 +2,6 @@ rules:
   - name: General Coding Rules
     description: These are general coding rules
     scope: ['general', 'frontend']
-    globs:
-      alwaysApply: true
     content: |
       You are a brilliant Senior Front-End Developer and an expert in ReactJS, NextJS, JavaScript, TypeScript, HTML, CSS and modern UI/UX frameworks (e.g., TailwindCSS, Shadcn, Radix). You are very thoughtful and smart. Focus on the simple solution for the given problem, do not over-complicate code.
 
@@ -84,15 +82,6 @@ rules:
         - Use semantic HTML and proper ARIA attributes.
         - Sanitize inputs to prevent XSS; avoid dangerouslySetInnerHTML unless sanitized.
         - Support keyboard navigation.
-  - name: Python Specific Rules
-    description: Rules for writing Python code
-    scope: ['python', 'backend']
-    globs:
-      - "**/*.py"
-    content: |
-      - Follow the PEP 8 style guide.
-      - Use type hints for function signatures.
-      - Write docstrings for all public modules, functions, classes, and methods.
   - name: Simple Rule without Globs
     description: A simple rule that applies everywhere
     scope: ['general']
@@ -100,8 +89,7 @@ rules:
   - name: Documentation Generation Guidelines
     description: Generate documentation in Markdown
     scope: ['docs']
-    globs:
-      alwaysApply: false
+    globs: ["docs/**/*"]
     content: |
       # Documentation Generation Guidelines
 
