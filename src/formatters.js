@@ -23,13 +23,53 @@ function checkOutputExists(outputPath, force, type = "directory") {
   }
 }
 
+// Helper function to generate ignore files
+function generateIgnoreFile(ignoreData, format, force) {
+  if (!ignoreData) return;
+
+  let outputPath;
+  let outputContent;
+
+  switch (format) {
+    case "cursor":
+      outputPath = ".cursorignore";
+      outputContent = ignoreData.join("\n");
+      break;
+    case "claude":
+      outputPath = ".claude/settings.json";
+      outputContent = JSON.stringify({ ignore: ignoreData }, null, 2);
+      break;
+    case "codex":
+      outputPath = ".codex/config.json";
+      outputContent = JSON.stringify({ ignorePatterns: ignoreData }, null, 2);
+      break;
+    default:
+      outputPath = ".aiignore";
+      outputContent = ignoreData.join("\n");
+      break;
+  }
+
+  if (outputPath) {
+    const dir = path.dirname(outputPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    checkOutputExists(outputPath, force, "file");
+    fs.writeFileSync(outputPath, outputContent);
+    console.log(`Successfully created ignore file: ${outputPath}`);
+  }
+}
+
 export function toCursorFormat(
   data,
   outputDir = ".cursor/rules",
-  force = false
+  force = false,
+  ignoreData = null
 ) {
   checkOutputExists(outputDir, force, "directory");
   fs.mkdirSync(outputDir, { recursive: true });
+
+  generateIgnoreFile(ignoreData, "cursor", force);
 
   data.rules.forEach((rule) => {
     const fileName =
@@ -57,8 +97,14 @@ ${rule.content}
   console.log(`Successfully created Cursor rules in ${outputDir}`);
 }
 
-export function toClaudeFormat(data, outputFile = "CLAUDE.md", force = false) {
+export function toClaudeFormat(
+  data,
+  outputFile = "CLAUDE.md",
+  force = false,
+  ignoreData = null
+) {
   checkOutputExists(outputFile, force, "file");
+  generateIgnoreFile(ignoreData, "claude", force);
   let content = "# Custom Rules for Claude\n\n";
   data.rules.forEach((rule) => {
     content += `## ${rule.name}\n\n`;
@@ -70,8 +116,14 @@ export function toClaudeFormat(data, outputFile = "CLAUDE.md", force = false) {
   console.log(`Successfully created Claude rules in ${outputFile}`);
 }
 
-export function toClineFormat(data, outputFile = ".clinerules", force = false) {
+export function toClineFormat(
+  data,
+  outputFile = ".clinerules",
+  force = false,
+  ignoreData = null
+) {
   checkOutputExists(outputFile, force, "file");
+  generateIgnoreFile(ignoreData, "cline", force);
   const clineRules = {
     rules: data.rules.map((rule) => {
       const clineRule = {
@@ -91,8 +143,14 @@ export function toClineFormat(data, outputFile = ".clinerules", force = false) {
   console.log(`Successfully created Cline rules in ${outputFile}`);
 }
 
-export function toCodexFormat(data, outputFile = "AGENTS.md", force = false) {
+export function toCodexFormat(
+  data,
+  outputFile = "AGENTS.md",
+  force = false,
+  ignoreData = null
+) {
   checkOutputExists(outputFile, force, "file");
+  generateIgnoreFile(ignoreData, "codex", force);
   let content = "# Agent Instructions for Codex CLI\n\n";
   data.rules.forEach((rule) => {
     content += `## ${rule.name}\n\n`;
@@ -107,10 +165,13 @@ export function toCodexFormat(data, outputFile = "AGENTS.md", force = false) {
 export function toKiloCodeFormat(
   data,
   outputDir = ".kilocode/rules",
-  force = false
+  force = false,
+  ignoreData = null
 ) {
   checkOutputExists(outputDir, force, "directory");
   fs.mkdirSync(outputDir, { recursive: true });
+
+  generateIgnoreFile(ignoreData, "kilo", force);
 
   data.rules.forEach((rule) => {
     const fileName =
@@ -125,10 +186,13 @@ export function toKiloCodeFormat(
 export function toWindsurfFormat(
   data,
   outputDir = ".windsurf/rules",
-  force = false
+  force = false,
+  ignoreData = null
 ) {
   checkOutputExists(outputDir, force, "directory");
   fs.mkdirSync(outputDir, { recursive: true });
+
+  generateIgnoreFile(ignoreData, "windsurf", force);
 
   data.rules.forEach((rule) => {
     const fileName =
