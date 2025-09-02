@@ -77,24 +77,32 @@ export function transform({
       );
     }
 
+    // Read and parse ignore.yaml if it exists
+    const ignorePath = path.join(path.dirname(argv.input), "ignore.yaml");
+    let ignoreData = null;
+    if (fs.existsSync(ignorePath)) {
+      const ignoreFile = fs.readFileSync(ignorePath, "utf8");
+      ignoreData = yaml.parse(ignoreFile);
+    }
+
     switch (argv.format.toLowerCase()) {
       case "cursor":
-        toCursorFormat(data, undefined, force);
+        toCursorFormat(data, undefined, force, ignoreData);
         break;
       case "claude":
-        toClaudeFormat(data, undefined, force);
+        toClaudeFormat(data, undefined, force, ignoreData);
         break;
       case "cline":
-        toClineFormat(data, undefined, force);
+        toClineFormat(data, undefined, force, ignoreData);
         break;
       case "codex":
-        toCodexFormat(data, undefined, force);
+        toCodexFormat(data, undefined, force, ignoreData);
         break;
       case "kilo":
-        toKiloCodeFormat(data, undefined, force);
+        toKiloCodeFormat(data, undefined, force, ignoreData);
         break;
       case "windsurf":
-        toWindsurfFormat(data, undefined, force);
+        toWindsurfFormat(data, undefined, force, ignoreData);
         break;
       case "json":
         toJsonFormat(data);
