@@ -80,24 +80,6 @@ The ignore rules support standard glob patterns:
 
 **Important:** Patterns containing wildcards (`*`) must be quoted to prevent YAML parsing errors.
 
-### Built-in Ignore Categories
-
-The default `ignore.yaml` includes comprehensive ignore rules for:
-
-- **Version Control Files**: Git directories and configuration files
-- **Node.js Dependencies**: Package manager files, node_modules, and debug logs
-- **Build Outputs**: Distribution directories and framework-specific build folders
-- **IDE and Editor Files**: Configuration files from various editors and IDEs
-- **Temporary and Cache Files**: Cache directories and temporary files
-- **Log Files**: Application logs and debug output
-- **Environment Files**: Local environment configurations and secrets
-- **AI Assistant Files**: Generated files from AI coding assistants to prevent circular processing
-- **Test Coverage and Reports**: Test results and coverage reports
-- **Documentation Files**: Standard project documentation that shouldn't be processed
-- **Binary and Media Files**: Images, archives, executables, and other binary formats
-- **Database Files**: Local database files and SQLite databases
-- **Compiled Files**: Bytecode, object files, and other compiled artifacts
-
 ### Using Ignore Rules
 
 The ignore rules are automatically applied during rule processing. You can:
