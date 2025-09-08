@@ -97,8 +97,6 @@ ignore_rules:
     description: Ignore standard documentation files that shouldn't be processed
     scope: ['general', 'docs']
     content:
-      - README.md
-      - CHANGELOG.md
       - LICENSE
       - CONTRIBUTING.md
 

@@ -32,6 +32,118 @@ rules:
       - Use type hints for function signatures.
 ```
 
+## Ignore Rules
+
+The project supports ignore rules to exclude specific files and patterns from processing. These are defined in the `ignore.yaml` file and help filter out unwanted files during rule transformation.
+
+### Ignore Rules Format
+
+The ignore rules follow a structured YAML format similar to the main rules, but are specifically designed for file filtering:
+
+```yaml
+ignore_rules:
+  - name: Version Control Files
+    description: Ignore version control and git-related files
+    scope: ['general', 'development']
+    content:
+      - .git/**
+      - .gitignore
+      - .gitattributes
+      - .gitmodules
+
+  - name: Node.js Dependencies
+    description: Ignore Node.js dependencies and package manager files
+    scope: ['general', 'development', 'build']
+    content:
+      - node_modules/**
+      - "npm-debug.log*"
+      - "yarn-debug.log*"
+      - package-lock.json
+```
+
+Each ignore rule object has the following fields:
+
+- `name`: (Required) A descriptive name for the ignore rule category
+- `description`: (Required) Explains what types of files this rule ignores
+- `scope`: (Optional) Defines the contexts where this ignore rule applies (e.g., `general`, `development`, `build`, `testing`)
+- `content`: (Required) A list of glob patterns specifying which files to ignore
+
+### Glob Pattern Syntax
+
+The ignore rules support standard glob patterns:
+
+- `**/*` - Matches all files in all subdirectories
+- `*.ext` - Matches all files with a specific extension (must be quoted: `"*.ext"`)
+- `dir/**` - Matches all files within a directory and its subdirectories
+- `file.txt` - Matches a specific file
+- `*pattern*` - Matches files containing a pattern (must be quoted: `"*pattern*"`)
+
+**Important:** Patterns containing wildcards (`*`) must be quoted to prevent YAML parsing errors.
+
+### Built-in Ignore Categories
+
+The default `ignore.yaml` includes comprehensive ignore rules for:
+
+- **Version Control Files**: Git directories and configuration files
+- **Node.js Dependencies**: Package manager files, node_modules, and debug logs
+- **Build Outputs**: Distribution directories and framework-specific build folders
+- **IDE and Editor Files**: Configuration files from various editors and IDEs
+- **Temporary and Cache Files**: Cache directories and temporary files
+- **Log Files**: Application logs and debug output
+- **Environment Files**: Local environment configurations and secrets
+- **AI Assistant Files**: Generated files from AI coding assistants to prevent circular processing
+- **Test Coverage and Reports**: Test results and coverage reports
+- **Documentation Files**: Standard project documentation that shouldn't be processed
+- **Binary and Media Files**: Images, archives, executables, and other binary formats
+- **Database Files**: Local database files and SQLite databases
+- **Compiled Files**: Bytecode, object files, and other compiled artifacts
+
+### Using Ignore Rules
+
+The ignore rules are automatically applied during rule processing. You can:
+
+1. **Modify existing categories**: Edit the patterns in any ignore rule category
+2. **Add new categories**: Create additional ignore rule objects for project-specific needs
+3. **Filter by scope**: Use scopes to apply ignore rules contextually
+4. **Custom ignore file**: Specify a different ignore file using CLI options
+
+### Examples
+
+#### Adding Custom Ignore Rules
+
+```yaml
+ignore_rules:
+  # ... existing rules ...
+  
+  - name: Project Specific Files
+    description: Ignore project-specific files that shouldn't be processed
+    scope: ['custom', 'project']
+    content:
+      - config/secrets/**
+      - "*.backup"
+      - legacy/**
+      - temp-*
+```
+
+#### Scope-based Filtering
+
+```yaml
+ignore_rules:
+  - name: Development Only
+    description: Files to ignore only during development
+    scope: ['development']
+    content:
+      - .vscode/**
+      - "*.dev.js"
+      
+  - name: Production Only
+    description: Files to ignore only in production builds
+    scope: ['production']
+    content:
+      - "*.test.js"
+      - __tests__/**
+```
+
 ## Usage
 
 The rule transformer can be used as a CLI tool. You need to have Node.js and npm installed to run the script.
@@ -94,13 +206,33 @@ The CLI supports the following options:
 
 - `-f, --format`: **(Required)** The output format (cursor, claude, cline, codex, kilo, windsurf, json)
 - `-i, --input`: Input YAML file (default: `rules.yaml`)
+- `--ignore`: Ignore rules YAML file (default: `ignore.yaml`)
 - `-s, --scope`: Filter rules by scope(s) - can be specified multiple times
+- `--ignore-scope`: Filter ignore rules by scope(s) - can be specified multiple times
 - `--force`: Force overwrite existing output files/directories
 - `-h, --help`: Show help information
 
 Example with all options:
 ```bash
-npm install && npx ai-rules --format cursor --input custom_rules.yaml --scope frontend python --force
+npm install && npx ai-rules --format cursor --input custom_rules.yaml --ignore custom_ignore.yaml --scope frontend python --ignore-scope development --force
+```
+
+#### Ignore-specific Options
+
+You can customize how ignore rules are applied:
+
+```bash
+# Use custom ignore file
+npm install && npx ai-rules --format cursor --ignore my_ignore.yaml
+
+# Apply only development-scoped ignore rules
+npm install && npx ai-rules --format cursor --ignore-scope development
+
+# Combine multiple ignore scopes
+npm install && npx ai-rules --format cursor --ignore-scope development build
+
+# Skip ignore rules entirely (process all files)
+npm install && npx ai-rules --format cursor --ignore ""
 ```
 
 ## Output Formats
