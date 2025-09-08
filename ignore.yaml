@@ -1,0 +1,136 @@
+ignore_rules:
+  - name: Version Control Files
+    description: Ignore version control and git-related files
+    scope: ['general', 'development']
+    content:
+      - .git/**
+      - .gitignore
+      - .gitattributes
+      - .gitmodules
+
+  - name: Node.js Dependencies
+    description: Ignore Node.js dependencies and package manager files
+    scope: ['general', 'development', 'build']
+    content:
+      - node_modules/**
+      - "npm-debug.log*"
+      - "yarn-debug.log*"
+      - "yarn-error.log*"
+      - .npm
+      - .yarn-integrity
+      - package-lock.json
+      - yarn.lock
+
+  - name: Build Outputs
+    description: Ignore build outputs and distribution files
+    scope: ['general', 'build', 'production']
+    content:
+      - dist/**
+      - build/**
+      - out/**
+      - .next/**
+      - .nuxt/**
+      - .output/**
+
+  - name: IDE and Editor Files
+    description: Ignore IDE and text editor configuration files
+    scope: ['general', 'development']
+    content:
+      - .vscode/**
+      - .idea/**
+      - "*.swp"
+      - "*.swo"
+      - "*~"
+      - .DS_Store
+      - Thumbs.db
+
+  - name: Temporary and Cache Files
+    description: Ignore temporary files and cache directories
+    scope: ['general', 'development', 'build']
+    content:
+      - tmp/**
+      - temp/**
+      - .cache/**
+      - .parcel-cache/**
+      - .eslintcache
+      - .stylelintcache
+
+  - name: Log Files
+    description: Ignore log files and logging directories
+    scope: ['general', 'development', 'production']
+    content:
+      - logs/**
+      - "*.log"
+      - "lerna-debug.log*"
+
+  - name: Environment Files
+    description: Ignore environment and configuration files
+    scope: ['general', 'security']
+    content:
+      - .env
+      - .env.local
+      - .env.development.local
+      - .env.test.local
+      - .env.production.local
+
+  - name: AI Assistant Files
+    description: Ignore AI assistant generated files to avoid processing our own outputs
+    scope: ['general', 'ai']
+    content:
+      - .cursor/**
+      - .clinerules
+      - CLAUDE.md
+      - AGENTS.md
+      - .kilocode/**
+      - .windsurf/**
+
+  - name: Test Coverage and Reports
+    description: Ignore test coverage reports and test result files
+    scope: ['general', 'testing']
+    content:
+      - coverage/**
+      - .nyc_output/**
+      - junit.xml
+      - test-results/**
+
+  - name: Documentation Files
+    description: Ignore standard documentation files that shouldn't be processed
+    scope: ['general', 'docs']
+    content:
+      - README.md
+      - CHANGELOG.md
+      - LICENSE
+      - CONTRIBUTING.md
+
+  - name: Binary and Media Files
+    description: Ignore binary files and media assets
+    scope: ['general', 'media']
+    content:
+      - "*.jpg"
+      - "*.jpeg"
+      - "*.png"
+      - "*.gif"
+      - "*.svg"
+      - "*.ico"
+      - "*.pdf"
+      - "*.zip"
+      - "*.tar.gz"
+      - "*.exe"
+      - "*.dll"
+
+  - name: Database Files
+    description: Ignore database files and SQLite databases
+    scope: ['general', 'database']
+    content:
+      - "*.db"
+      - "*.sqlite"
+      - "*.sqlite3"
+
+  - name: Compiled Files
+    description: Ignore compiled files and bytecode
+    scope: ['general', 'build']
+    content:
+      - "*.class"
+      - "*.o"
+      - "*.pyc"
+      - __pycache__/**
