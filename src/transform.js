@@ -64,8 +64,26 @@ export function transform({
     const file = fs.readFileSync(argv.input, "utf8");
     const data = yaml.parse(file);
 
-    if (!data.rules) {
-      throw new Error('The YAML file must have a root element named "rules".');
+    // Determine if this is a rules file or ignore file
+    const isIgnoreFile = data.ignore_rules && !data.rules;
+    const isRulesFile = data.rules && !data.ignore_rules;
+
+    if (!isIgnoreFile && !isRulesFile) {
+      throw new Error(
+        'The YAML file must have a root element named "rules" or "ignore_rules".'
+      );
+    }
+
+    // If processing ignore.yaml directly, convert ignore rules to rules format
+    if (isIgnoreFile) {
+      data.rules = data.ignore_rules.map((rule) => ({
+        name: rule.name,
+        description: rule.description,
+        scope: rule.scope,
+        content: Array.isArray(rule.content)
+          ? rule.content.join("\n")
+          : rule.content,
+      }));
     }
 
     // Filter rules by scope if the --scope option is provided
@@ -77,12 +95,37 @@ export function transform({
       );
     }
 
-    // Read and parse ignore.yaml if it exists
-    const ignorePath = path.join(path.dirname(argv.input), "ignore.yaml");
+    // Read and parse ignore.yaml if it exists and we're processing rules.yaml
     let ignoreData = null;
-    if (fs.existsSync(ignorePath)) {
-      const ignoreFile = fs.readFileSync(ignorePath, "utf8");
-      ignoreData = yaml.parse(ignoreFile);
+    if (isRulesFile) {
+      const ignorePath = path.join(path.dirname(argv.input), "ignore.yaml");
+      if (fs.existsSync(ignorePath)) {
+        const ignoreFile = fs.readFileSync(ignorePath, "utf8");
+        const parsedIgnore = yaml.parse(ignoreFile);
+
+        // Handle new structured format
+        if (parsedIgnore && parsedIgnore.ignore_rules) {
+          // Filter ignore rules by scope if specified
+          let filteredIgnoreRules = parsedIgnore.ignore_rules;
+          if (argv.scope && argv.scope.length > 0) {
+            const scopes = argv.scope.map((s) => s.toLowerCase());
+            filteredIgnoreRules = parsedIgnore.ignore_rules.filter(
+              (rule) =>
+                rule.scope &&
+                rule.scope.some((s) => scopes.includes(s.toLowerCase()))
+            );
+          }
+
+          // Flatten content arrays into a single array for backward compatibility
+          ignoreData = filteredIgnoreRules
+            .map((rule) => rule.content || [])
+            .flat()
+            .filter(Boolean);
+        } else if (Array.isArray(parsedIgnore)) {
+          // Handle legacy flat array format
+          ignoreData = parsedIgnore;
+        }
+      }
     }
 
     switch (argv.format.toLowerCase()) {

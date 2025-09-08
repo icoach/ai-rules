@@ -14,7 +14,7 @@ const argv = yargs(hideBin(process.argv))
   .option("input", {
     alias: "i",
     type: "string",
-    description: "The input YAML file",
+    description: "The input YAML file (rules.yaml or ignore.yaml)",
     default: "rules.yaml",
   })
   .option("scope", {
