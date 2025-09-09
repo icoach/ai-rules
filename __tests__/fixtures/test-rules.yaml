@@ -1,0 +1,23 @@
+rules:
+  - name: "General Coding Rules"
+    description: "These are general coding rules"
+    scope: ["javascript", "typescript"]
+    globs: ["*.js", "*.ts", "*.jsx", "*.tsx"]
+    content: |
+      You are a brilliant Senior Front-End Developer and an expert in ReactJS, NextJS, JavaScript, TypeScript, HTML, CSS and modern UI/UX frameworks.
+      - Follow the user's requirements carefully & to the letter.
+      - Use early returns whenever possible to make the code more readable.
+      - Always use Tailwind classes for styling HTML elements.
+
+  - name: "Python Specific Rules"
+    description: "Rules for writing Python code"
+    scope: ["python"]
+    globs: ["*.py"]
+    content: |
+      - Follow the PEP 8 style guide.
+      - Use type hints for function signatures.
+      - Write docstrings for all public modules, functions, classes, and methods.
+
+  - name: "Simple Rule without Globs"
+    description: "A simple rule that applies everywhere"
+    content: "This is a simple rule prompt that should be considered for all files."

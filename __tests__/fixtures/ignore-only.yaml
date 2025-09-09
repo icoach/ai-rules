@@ -1,0 +1,7 @@
+ignore_rules:
+  - name: "Test Ignore Rules"
+    description: "Rules for testing ignore-only transformation"
+    scope: ["javascript"]
+    content:
+      - "*.test.js"
+      - "coverage/**"

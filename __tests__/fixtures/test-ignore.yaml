@@ -1,0 +1,18 @@
+ignore_rules:
+  - name: "Node.js ignores"
+    description: "Standard Node.js files to ignore"
+    scope: ["javascript", "typescript"]
+    content:
+      - "node_modules/**"
+      - "dist/**"
+      - "build/**"
+      - "*.log"
+
+  - name: "Python ignores"
+    description: "Standard Python files to ignore"
+    scope: ["python"]
+    content:
+      - "__pycache__/**"
+      - "*.pyc"
+      - ".venv/**"
+      - "venv/**"
