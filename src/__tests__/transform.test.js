@@ -3,13 +3,25 @@ import fs from 'fs'
 import path from 'path'
 import { transform } from '../transform.js'
 
-// Simple integration tests that focus on core functionality
+/**
+ * @typedef {Object} MockConsole
+ * @property {jest.SpyInstance} mockExit - Mocked process.exit function
+ * @property {jest.SpyInstance} mockConsoleError - Mocked console.error function
+ * @property {jest.SpyInstance} mockConsoleLog - Mocked console.log function
+ */
+
+/**
+ * Simple integration tests that focus on core functionality
+ */
 describe('transform', () => {
   const originalCwd = process.cwd()
   const testFixtures = path.join(process.cwd(), '__tests__/fixtures')
   
+  /** @type {jest.SpyInstance} */
   let mockExit
+  /** @type {jest.SpyInstance} */
   let mockConsoleError
+  /** @type {jest.SpyInstance} */
   let mockConsoleLog
 
   beforeEach(() => {

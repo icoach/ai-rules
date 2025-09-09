@@ -11,6 +11,39 @@ import {
   toJsonFormat,
 } from "./formatters.js";
 
+/**
+ * @typedef {Object} Rule
+ * @property {string} name - The name of the rule
+ * @property {string} description - Description of the rule
+ * @property {string[]} [scope] - Array of scopes where the rule applies
+ * @property {string} content - The rule content
+ * @property {string[]} [globs] - Glob patterns for file matching
+ */
+
+/**
+ * @typedef {Object} RulesData
+ * @property {Rule[]} rules - Array of rules
+ */
+
+/**
+ * @typedef {Object} IgnoreData
+ * @property {Object[]} ignore_rules - Array of ignore rule objects
+ */
+
+/**
+ * @typedef {Object} TransformOptions
+ * @property {string} format - Output format (cursor, claude, cline, codex, kilo, windsurf, json)
+ * @property {string[]} [scopes] - Array of scopes to filter by
+ * @property {string} [inputPath] - Path to input YAML file
+ * @property {string} [cwd] - Working directory to change to
+ * @property {boolean} [force] - Whether to overwrite existing files
+ */
+
+/**
+ * Transforms rules from YAML format to various AI assistant formats
+ * @param {TransformOptions} [options] - Transform configuration options
+ * @returns {void}
+ */
 export function transform({
   format,
   scopes = [],

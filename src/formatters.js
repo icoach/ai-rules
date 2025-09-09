@@ -2,7 +2,13 @@ import fs from "fs";
 import path from "path";
 import yaml from "yaml";
 
-// Helper function to check if output exists and handle force logic
+/**
+ * Helper function to check if output exists and handle force logic
+ * @param {string} outputPath - Path to check for existence
+ * @param {boolean} force - Whether to force overwrite existing files
+ * @param {string} [type="directory"] - Type of output ("directory" or "file")
+ * @returns {void}
+ */
 function checkOutputExists(outputPath, force, type = "directory") {
   if (fs.existsSync(outputPath)) {
     if (!force) {
@@ -23,7 +29,13 @@ function checkOutputExists(outputPath, force, type = "directory") {
   }
 }
 
-// Helper function to generate ignore files
+/**
+ * Helper function to generate ignore files
+ * @param {string[]|null} ignoreData - Array of ignore patterns or null
+ * @param {string} format - Output format
+ * @param {boolean} force - Whether to force overwrite existing files
+ * @returns {void}
+ */
 function generateIgnoreFile(ignoreData, format, force) {
   if (!ignoreData) return;
 
@@ -60,6 +72,14 @@ function generateIgnoreFile(ignoreData, format, force) {
   }
 }
 
+/**
+ * Converts rules to Cursor format (.cursor/rules/*.mdc files)
+ * @param {Object} data - Rules data object
+ * @param {string} [outputDir=".cursor/rules"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @param {string[]|null} [ignoreData=null] - Array of ignore patterns
+ * @returns {void}
+ */
 export function toCursorFormat(
   data,
   outputDir = ".cursor/rules",
@@ -97,6 +117,14 @@ ${rule.content}
   console.log(`Successfully created Cursor rules in ${outputDir}`);
 }
 
+/**
+ * Converts rules to Claude format (CLAUDE.md file)
+ * @param {Object} data - Rules data object
+ * @param {string} [outputFile="CLAUDE.md"] - Output file path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @param {string[]|null} [ignoreData=null] - Array of ignore patterns
+ * @returns {void}
+ */
 export function toClaudeFormat(
   data,
   outputFile = "CLAUDE.md",
@@ -116,6 +144,14 @@ export function toClaudeFormat(
   console.log(`Successfully created Claude rules in ${outputFile}`);
 }
 
+/**
+ * Converts rules to Cline format (.clinerules YAML file)
+ * @param {Object} data - Rules data object
+ * @param {string} [outputFile=".clinerules"] - Output file path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @param {string[]|null} [ignoreData=null] - Array of ignore patterns
+ * @returns {void}
+ */
 export function toClineFormat(
   data,
   outputFile = ".clinerules",
@@ -143,6 +179,14 @@ export function toClineFormat(
   console.log(`Successfully created Cline rules in ${outputFile}`);
 }
 
+/**
+ * Converts rules to Codex CLI format (AGENTS.md file)
+ * @param {Object} data - Rules data object
+ * @param {string} [outputFile="AGENTS.md"] - Output file path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @param {string[]|null} [ignoreData=null] - Array of ignore patterns
+ * @returns {void}
+ */
 export function toCodexFormat(
   data,
   outputFile = "AGENTS.md",
@@ -162,6 +206,14 @@ export function toCodexFormat(
   console.log(`Successfully created Codex CLI rules in ${outputFile}`);
 }
 
+/**
+ * Converts rules to Kilo Code format (.kilocode/rules/*.md files)
+ * @param {Object} data - Rules data object
+ * @param {string} [outputDir=".kilocode/rules"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @param {string[]|null} [ignoreData=null] - Array of ignore patterns
+ * @returns {void}
+ */
 export function toKiloCodeFormat(
   data,
   outputDir = ".kilocode/rules",
@@ -183,6 +235,14 @@ export function toKiloCodeFormat(
   console.log(`Successfully created Kilo Code rules in ${outputDir}`);
 }
 
+/**
+ * Converts rules to Windsurf format (.windsurf/rules/*.md files)
+ * @param {Object} data - Rules data object
+ * @param {string} [outputDir=".windsurf/rules"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @param {string[]|null} [ignoreData=null] - Array of ignore patterns
+ * @returns {void}
+ */
 export function toWindsurfFormat(
   data,
   outputDir = ".windsurf/rules",
@@ -204,6 +264,11 @@ export function toWindsurfFormat(
   console.log(`Successfully created Windsurf rules in ${outputDir}`);
 }
 
+/**
+ * Converts rules to JSON format and outputs to console
+ * @param {Object} data - Rules data object
+ * @returns {void}
+ */
 export function toJsonFormat(data) {
   console.log(JSON.stringify(data, null, 2));
 }
