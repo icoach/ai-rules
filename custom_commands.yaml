@@ -1,0 +1,85 @@
+rules:
+  - name: "explain"
+    description: "Explains the selected code snippet or file."
+    scope: ['general']
+    content: |
+      Explain the selected code.
+
+      Provide a clear and concise explanation, including:
+      1.  **High-level purpose:** What does this code do?
+      2.  **Key components:** Describe the main functions, classes, and variables.
+      3.  **Logic flow:** How does the code execute?
+      4.  **Potential improvements:** Suggest any possible refactorings or optimizations.
+
+      Here is the code:
+      ```
+      {{code}}
+      ```
+
+  - name: "generate-tests"
+    description: "Generates unit tests for the selected code."
+    scope: ['general']
+    content: |
+      Generate a suite of unit tests for the following code.
+
+      - Identify the testing framework used in the project (e.g., pytest, Jest, JUnit) and use it.
+      - Cover the main functionality.
+      - Include tests for edge cases, such as invalid inputs or boundary conditions.
+      - Provide the complete, runnable test file content.
+
+      Here is the code to test:
+      ```
+      {{code}}
+      ```
+
+  - name: "refactor"
+    description: "Refactors the selected code for better readability and performance."
+    scope: ['general']
+    content: |
+      Refactor the following code to improve its quality.
+
+      Focus on:
+      - **Readability:** Improve variable names, add comments where necessary, and simplify complex logic.
+      - **Performance:** Identify and optimize any performance bottlenecks.
+      - **Best practices:** Apply language-specific and general programming best practices.
+      - **Maintainability:** Ensure the code is easy to understand and modify in the future.
+
+      Provide the refactored code, explaining the changes you made.
+
+      Here is the code to refactor:
+      ```
+      {{code}}
+      ```
+
+  - name: "find-bugs"
+    description: "Analyzes the selected code for potential bugs and vulnerabilities."
+    scope: ['general']
+    content: |
+      Analyze the following code for potential bugs, logic errors, and security vulnerabilities.
+
+      For each issue found, provide:
+      1.  A description of the bug/vulnerability.
+      2.  The severity (e.g., critical, high, medium, low).
+      3.  A suggestion for how to fix it.
+
+      Here is the code to analyze:
+      ```
+      {{code}}
+      ```
+
+  - name: "document"
+    description: "Adds documentation (e.g., docstrings, comments) to the selected code."
+    scope: ['general']
+    content: |
+      Add comprehensive documentation to the following code.
+
+      - Add a docstring or header comment for each function, class, and module, explaining its purpose, parameters, and return values.
+      - Add inline comments to clarify complex or non-obvious parts of the code.
+      - Follow the standard documentation style for the language (e.g., JSDoc, reStructuredText, Google Style).
+
+      Provide the fully documented code.
+
+      Here is the code to document:
+      ```
+      {{code}}
+      ```
