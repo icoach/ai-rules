@@ -11,16 +11,23 @@ const argv = yargs(hideBin(process.argv))
       "The output format (cursor, claude, cline, codex, kilo, windsurf, json)",
     demandOption: true,
   })
+  .option("type", {
+    alias: "t",
+    type: "string",
+    description: "Type of content to transform (rules, commands)",
+    choices: ["rules", "commands"],
+    default: "rules",
+  })
   .option("input", {
     alias: "i",
     type: "string",
-    description: "The input YAML file (rules.yaml or ignore.yaml)",
-    default: "rules.yaml",
+    description:
+      "The input YAML file (auto-detected based on type if not specified)",
   })
   .option("scope", {
     alias: "s",
     type: "array",
-    description: "Filter rules by scope(s)",
+    description: "Filter rules/commands by scope(s)",
   })
   .option("force", {
     type: "boolean",
@@ -35,6 +42,7 @@ const scopes = argv.scope || [];
 try {
   await transform({
     format: argv.format,
+    type: argv.type,
     scopes,
     inputPath: argv.input,
     cwd: process.cwd(),
