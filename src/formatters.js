@@ -272,3 +272,144 @@ export function toWindsurfFormat(
 export function toJsonFormat(data) {
   console.log(JSON.stringify(data, null, 2));
 }
+
+// ============================================
+// COMMAND FORMATTERS
+// ============================================
+
+/**
+ * Converts commands to Cursor format (.cursor/commands/*.md files)
+ * @param {Object} data - Commands data object
+ * @param {string} [outputDir=".cursor/commands"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @returns {void}
+ */
+export function toCursorCommandFormat(
+  data,
+  outputDir = ".cursor/commands",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
+  fs.mkdirSync(outputDir, { recursive: true });
+
+  data.rules.forEach((command) => {
+    const fileName =
+      command.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "") + ".md";
+    const filePath = path.join(outputDir, fileName);
+
+    // For Cursor commands, we use the content directly as markdown
+    const fileContent = command.content;
+    fs.writeFileSync(filePath, fileContent);
+  });
+  console.log(`Successfully created Cursor commands in ${outputDir}`);
+}
+
+/**
+ * Converts commands to Claude Code format (slash commands in .claude/commands/*.md files)
+ * @param {Object} data - Commands data object
+ * @param {string} [outputDir=".claude/commands"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @returns {void}
+ */
+export function toClaudeCommandFormat(
+  data,
+  outputDir = ".claude/commands",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
+  fs.mkdirSync(outputDir, { recursive: true });
+
+  data.rules.forEach((command) => {
+    const fileName =
+      command.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "") + ".md";
+    const filePath = path.join(outputDir, fileName);
+
+    // Claude Code expects markdown files with the command content
+    const fileContent = command.content;
+    fs.writeFileSync(filePath, fileContent);
+  });
+  console.log(`Successfully created Claude Code commands in ${outputDir}`);
+}
+
+/**
+ * Converts commands to Cline format (slash commands in .cline/commands/*.md files)
+ * @param {Object} data - Commands data object
+ * @param {string} [outputDir=".cline/commands"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @returns {void}
+ */
+export function toClineCommandFormat(
+  data,
+  outputDir = ".cline/commands",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
+  fs.mkdirSync(outputDir, { recursive: true });
+
+  data.rules.forEach((command) => {
+    const fileName =
+      command.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "") + ".md";
+    const filePath = path.join(outputDir, fileName);
+
+    // Cline uses markdown files for slash commands
+    const fileContent = command.content;
+    fs.writeFileSync(filePath, fileContent);
+  });
+  console.log(`Successfully created Cline commands in ${outputDir}`);
+}
+
+/**
+ * Converts commands to Codex CLI format (COMMANDS.md file)
+ * @param {Object} data - Commands data object
+ * @param {string} [outputFile="COMMANDS.md"] - Output file path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @returns {void}
+ */
+export function toCodexCommandFormat(
+  data,
+  outputFile = "COMMANDS.md",
+  force = false
+) {
+  checkOutputExists(outputFile, force, "file");
+
+  let content = "# Available Commands for Codex CLI\n\n";
+  content += "These are predefined commands you can use with Codex CLI.\n\n";
+
+  data.rules.forEach((command) => {
+    content += `## ${command.name}\n\n`;
+    content += `**Description:** ${command.description}\n\n`;
+    content += `**Usage:**\n\`\`\`\ncodex "${command.name.toLowerCase()}"\n\`\`\`\n\n`;
+    content += `**Instructions:**\n${command.content}\n\n`;
+    content += "---\n\n";
+  });
+
+  fs.writeFileSync(outputFile, content);
+  console.log(`Successfully created Codex CLI commands in ${outputFile}`);
+}
+
+/**
+ * Converts commands to Kilo Code format (.kilocode/workflows/*.md files)
+ * @param {Object} data - Commands data object
+ * @param {string} [outputDir=".kilocode/workflows"] - Output directory path
+ * @param {boolean} [force=false] - Whether to force overwrite existing files
+ * @returns {void}
+ */
+export function toKiloCommandFormat(
+  data,
+  outputDir = ".kilocode/workflows",
+  force = false
+) {
+  checkOutputExists(outputDir, force, "directory");
+  fs.mkdirSync(outputDir, { recursive: true });
+
+  data.rules.forEach((command) => {
+    const fileName =
+      command.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "") + ".md";
+    const filePath = path.join(outputDir, fileName);
+
+    // Kilo Code workflows are markdown files
+    const fileContent = command.content;
+    fs.writeFileSync(filePath, fileContent);
+  });
+  console.log(`Successfully created Kilo Code workflows in ${outputDir}`);
+}
