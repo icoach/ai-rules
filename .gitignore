@@ -5,6 +5,8 @@
 .clinerules
 CLAUDE.md
 AGENTS.md
+.cursorignore
+.aiignore
 
 # Logs
 logs
