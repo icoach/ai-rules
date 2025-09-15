@@ -12,6 +12,7 @@ rules:
       - Do not explain code thoroughly, use just simple short concise, yet exact, explanation in bullet points
       - Leave NO todo’s, placeholders or missing pieces.
       - Avoid code duplication, if there is similar implementation in the code, try to reuse it and make an abstraction
+      - Use docs/components-inventory.md if exists to avoid duplication of existing components
       - Use programming standards like DRY, KISS, SOLID
       - When fixing an issue or bug, do not add new features, just fix the issue at hand
       - Keep the codebase clean and organized
@@ -94,10 +95,23 @@ rules:
       # Documentation Generation Guidelines
 
       - Use Markdown syntax for all documentation.
+      - Generate documentation for all major changes in the application
+      - Update already existing documentation if making changes to the related code
       - Structure docs with clear headings: Overview, Installation, Usage, Examples, and Troubleshooting.
       - Use fenced code blocks for code snippets with language tags.
-      - Prefer concise, clear, and professional language.
+      - Prefer short, concise, clear, and professional language.
       - Link to related source files using `@path/to/file.ts`.
       - Avoid deprecated documentation styles such as excessive inline HTML or unsupported markdown extensions.
       - Include versioning and changelog references where applicable.
-      - All documentation is in `docs/` folder
+      - Output all documentation to `docs/` folder
+  - name: Components inventory
+    description: Generate inventory documentation for app components in Markdown
+    scope: ['docs']
+    content: |
+      # Inventory documentation guidelines
+
+      - Inventory should be simple list of existing components with short description
+      - Use component name, description and filename
+      - The description should highlight component's purpose for maximizing reusability
+      - Store inventory in `docs/components-inventory.md`
+      - Document only app components, do not document tests, linter, build tools and other miscellaneous code
