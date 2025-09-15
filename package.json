@@ -8,15 +8,12 @@
     "ai-rules": "./bin/transform.mjs"
   },
   "scripts": {
-    "rules:cursor": "npx ai-rules --format cursor",
-    "rules:claude": "npx ai-rules --format claude -s python docs",
-    "rules:windsurf": "npx ai-rules --format windsurf",
-    "commands:cursor": "npx ai-rules --format cursor --type commands",
-    "commands:claude": "npx ai-rules --format claude --type commands",
-    "commands:cline": "npx ai-rules --format cline --type commands",
-    "commands:codex": "npx ai-rules --format codex --type commands",
-    "commands:kilo": "npx ai-rules --format kilo --type commands",
-    "commands:all": "npm run commands:cursor && npm run commands:claude && npm run commands:cline && npm run commands:codex && npm run commands:kilo",
+    "build": "node bin/transform.mjs",
+    "build:commands": "node bin/transform.mjs --type commands",
+    "build:cursor": "node bin/transform.mjs --format cursor",
+    "build:windsurf": "node bin/transform.mjs --format windsurf",
+    "build:claude": "node bin/transform.mjs --format claude",
+    "build:cline": "node bin/transform.mjs --format cline",
     "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "test:watch": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --watch",
     "test:coverage": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage"

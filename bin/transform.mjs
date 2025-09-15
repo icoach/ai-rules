@@ -8,8 +8,8 @@ const argv = yargs(hideBin(process.argv))
     alias: "f",
     type: "string",
     description:
-      "The output format (cursor, claude, cline, codex, kilo, windsurf, json)",
-    demandOption: true,
+      "The output format (cursor, claude, cline, codex, kilo, windsurf, json). If not specified, generates cursor, claude, and windsurf formats.",
+    demandOption: false,
   })
   .option("type", {
     alias: "t",
@@ -40,14 +40,40 @@ const argv = yargs(hideBin(process.argv))
 const scopes = argv.scope || [];
 
 try {
-  await transform({
-    format: argv.format,
-    type: argv.type,
-    scopes,
-    inputPath: argv.input,
-    cwd: process.cwd(),
-    force: argv.force,
-  });
+  // If no format specified, generate the main formats
+  if (!argv.format) {
+    // Different default formats for rules vs commands
+    const mainFormats =
+      argv.type === "commands"
+        ? ["cursor", "claude", "cline"]
+        : ["cursor", "claude", "windsurf"];
+
+    console.log(
+      `No format specified. Generating main ${argv.type} formats:`,
+      mainFormats.join(", ")
+    );
+
+    for (const format of mainFormats) {
+      console.log(`\nGenerating ${format} format...`);
+      await transform({
+        format,
+        type: argv.type,
+        scopes: format === "claude" ? ["python", "docs"] : scopes,
+        inputPath: argv.input,
+        cwd: process.cwd(),
+        force: argv.force,
+      });
+    }
+  } else {
+    await transform({
+      format: argv.format,
+      type: argv.type,
+      scopes,
+      inputPath: argv.input,
+      cwd: process.cwd(),
+      force: argv.force,
+    });
+  }
 } catch (err) {
   console.error(err?.stack || String(err));
   process.exit(1);
