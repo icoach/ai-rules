@@ -8,13 +8,13 @@ Install the package in your project:
 
 ```bash
 # Using pnpm
-pnpm add ai-rules
+pnpm add @icoach/ai-rules
 
 # Using npm
-npm install ai-rules
+npm install @icoach/ai-rules
 
 # Using yarn
-yarn add ai-rules
+yarn add @icoach/ai-rules
 ```
 
 ## Quick Start
@@ -285,6 +285,29 @@ pnpm exec ai-rules --format cursor --force
 ```bash
 # Check that your rules have the correct scope values
 pnpm exec ai-rules --scope frontend --format json
+```
+
+## API Usage
+
+You can also use this package programmatically:
+
+```javascript
+import { transform } from '@icoach/ai-rules';
+
+// Transform rules to Cursor format
+transform({
+  format: 'cursor',
+  type: 'rules',
+  inputPath: './my-rules.yaml',
+  force: true
+});
+
+// Transform commands to Claude format
+transform({
+  format: 'claude',
+  type: 'commands',
+  scopes: ['frontend', 'testing']
+});
 ```
 
 ## License

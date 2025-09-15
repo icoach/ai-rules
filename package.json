@@ -1,12 +1,50 @@
 {
-  "name": "ai-rules",
-  "version": "1.0.0",
-  "description": "A script to transform YAML rules into various formats.",
+  "name": "@icoach/ai-rules",
+  "version": "0.2.2",
+  "description": "Transform YAML-based coding rules into AI assistant-specific formats. Define your coding standards once and generate rules for Cursor, Claude, Cline, Windsurf, and other AI coding assistants.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icoach/ai-rules.git"
+  },
+  "homepage": "https://github.com/icoach/ai-rules#readme",
+  "bugs": {
+    "url": "https://github.com/icoach/ai-rules/issues"
+  },
+  "keywords": [
+    "ai",
+    "rules",
+    "coding-standards",
+    "cursor",
+    "claude",
+    "cline",
+    "windsurf",
+    "yaml",
+    "transform",
+    "assistant"
+  ],
+  "author": "Martin Stanek (https://github.com/icoach)",
   "type": "module",
   "main": "src/transform.js",
-  "bin": {
-    "ai-rules": "./bin/transform.mjs"
+  "exports": {
+    ".": {
+      "import": "./src/transform.js",
+      "default": "./src/transform.js"
+    },
+    "./formatters": {
+      "import": "./src/formatters.js",
+      "default": "./src/formatters.js"
+    }
   },
+  "bin": {
+    "ai-rules": "bin/transform.mjs"
+  },
+  "files": [
+    "src/",
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "node bin/transform.mjs",
     "build:commands": "node bin/transform.mjs --type commands",
@@ -16,7 +54,8 @@
     "build:cline": "node bin/transform.mjs --format cline",
     "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "test:watch": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --watch",
-    "test:coverage": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage"
+    "test:coverage": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage",
+    "prepublishOnly": "npm test"
   },
   "dependencies": {
     "yaml": "^2.3.1",

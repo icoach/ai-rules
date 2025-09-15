@@ -63,10 +63,17 @@ function generateIgnoreFile(ignoreData, format, force) {
 
   if (outputPath) {
     const dir = path.dirname(outputPath);
-    if (!fs.existsSync(dir)) {
+    if (dir !== "." && !fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    checkOutputExists(outputPath, force, "file");
+
+    // Only check if file exists when force is false, otherwise overwrite
+    if (fs.existsSync(outputPath) && !force) {
+      console.error(`Error: File '${outputPath}' already exists.`);
+      console.error("Use --force flag to overwrite existing output.");
+      process.exit(1);
+    }
+
     fs.writeFileSync(outputPath, outputContent);
     console.log(`Successfully created ignore file: ${outputPath}`);
   }

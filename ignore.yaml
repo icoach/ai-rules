@@ -93,15 +93,6 @@ ignore_rules:
       - junit.xml
       - test-results/**
 
-  - name: Documentation Files
-    description: Ignore standard documentation files that shouldn't be processed
-    scope: ['general', 'docs']
-    content:
-      - README.md
-      - CHANGELOG.md
-      - LICENSE
-      - CONTRIBUTING.md
-
   - name: Binary and Media Files
     description: Ignore binary files and media assets
     scope: ['general', 'media']

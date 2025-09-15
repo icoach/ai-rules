@@ -1,0 +1,35 @@
+# Test files
+__tests__/
+*.test.js
+*.spec.js
+test/
+coverage/
+
+# Development files
+.git/
+.github/
+.vscode/
+.cursor/
+.cline/
+.claude/
+.windsurf/
+
+# Build and temporary files
+node_modules/
+dist/
+*.log
+*.tmp
+*.temp
+
+# Documentation and config files not needed in package
+docs/
+*.md
+!README.md
+jest.config.json
+.gitignore
+.cursorignore
+
+# YAML files (these are for users to create)
+rules.yaml
+commands.yaml
+ignore.yaml
